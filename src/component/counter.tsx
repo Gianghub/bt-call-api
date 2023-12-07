@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useCounterStore } from '@/lib/store';
+import { useCounterStore } from '@/lib/useTodo';
 import '../ui/couterApp.css'; // Import file CSS
 
 const CounterComponent: React.FC = () => {

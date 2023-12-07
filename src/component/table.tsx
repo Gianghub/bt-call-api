@@ -1,15 +1,16 @@
 // components/Table.tsx
 import React, { useEffect } from 'react';
-import { useStore } from '../lib/store';
+import { useTodo } from '../lib/useTodo';
 
 const Table: React.FC = () => {
-  const todos = useStore((state) => state.todos);
-  const fetchTodos = useStore((state) => state.fetchTodos);
+  const {todos,fetchTodos,loading,erorr} = useTodo();
 
   useEffect(() => {
     fetchTodos();
   }, [fetchTodos]);
-
+  
+  if(loading) return <p>Loading...</p>
+  if(erorr) return <p>Error</p>;
   return (
     <table style={{border:'1px solid white'}}>
       <thead>

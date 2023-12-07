@@ -1,6 +1,6 @@
 // lib/store.ts
 import { create } from 'zustand';
-
+import axios from 'axios';
 interface Todo {
     userId: number;
     id: number;
@@ -10,19 +10,24 @@ interface Todo {
 
 interface State {
     todos: Todo[];
-    fetchTodos: () => void; //dung de nhan du lieu
+    loading : boolean;
+    erorr : boolean;
 }
-
-export const useStore = create<State>((set) => ({
+interface Action{
+    fetchTodos: () => void;
+}
+export const useTodo = create<State & Action>((set) => ({
     todos: [],
+    loading:true,
+    erorr : false,
     fetchTodos: async () => {
         try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-            const data = await response.json();
+            const response = await axios.get('https://jsonplaceholder.typicode.com/todos');
+            const data = await response.data;
             const todosArray = Array.isArray(data) ? data : [data];
-            set({ todos: todosArray });
+            set({ todos: todosArray,loading:false });
         } catch (error) {
-            console.error('Error fetching todos:', error);
+            set({erorr:true,loading:false})
         }
     },
 }));
